@@ -1,0 +1,363 @@
+{
+  "openapi": "3.0.0",
+  "swagger": "5.0",
+  "info": {
+    "title": "Instagram Clone API",
+    "version": "1.0.0",
+    "description": "API documentation for Instagram Clone backend service",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "paths": {
+    "/api/posts/create": {
+      "post": {
+        "summary": "Create a new post",
+        "tags": ["Posts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "caption": {
+                    "type": "string"
+                  },
+                  "imageUrl": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "caption": "My new post",
+                "imageUrl": "https://example.com/my-image.jpg",
+                "userId": "user_id"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "post_id",
+                  "caption": "My new post",
+                  "imageUrl": "https://example.com/my-image.jpg",
+                  "user": {
+                    "_id": "user_id",
+                    "username": "john_doe"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Caption, imageUrl, and userId are required"
+          },
+          "500": {
+            "description": "Failed to create a post"
+          }
+        }
+      }
+    },
+    "/api/posts/post/{postId}": {
+      "get": {
+        "summary": "View a post",
+        "tags": ["Posts"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postId",
+            "required": true,
+            "description": "ID of the post to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "post_id",
+                  "caption": "My new post",
+                  "imageUrl": "https://example.com/my-image.jpg",
+                  "user": {
+                    "_id": "user_id",
+                    "username": "john_doe"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "Failed to fetch the post"
+          }
+        }
+      }
+    },
+    "/api/posts/post/{postId}/comment": {
+      "post": {
+        "summary": "Add a comment to a post",
+        "tags": ["Posts"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postId",
+            "required": true,
+            "description": "ID of the post to add a comment to",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "text": "A great post!",
+                "userId": "user_id"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment added successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "post_id",
+                  "caption": "My new post",
+                  "imageUrl": "https://example.com/my-image.jpg",
+                  "user": {
+                    "_id": "user_id",
+                    "username": "john_doe"
+                  },
+                  "comments": [
+                    {
+                      "_id": "comment_id",
+                      "text": "A great post!",
+                      "user": "user_id"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Comment text and userId are required"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "Failed to add a comment"
+          }
+        }
+      }
+    },
+    "/api/posts/post/{postId}/like": {
+      "post": {
+        "summary": "Like or unlike a post",
+        "tags": ["Posts"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postId",
+            "required": true,
+            "description": "ID of the post to like/unlike",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "action": "like"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post liked/unliked successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "post_id",
+                  "caption": "My new post",
+                  "imageUrl": "https://example.com/my-image.jpg",
+                  "user": {
+                    "_id": "user_id",
+                    "username": "john_doe"
+                  },
+                  "likes": 5
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "Failed to like/unlike the post"
+          }
+        }
+      }
+    },
+    "/api/users/register": {
+      "post": {
+        "summary": "Register a new user",
+        "description": "Register a new user with a unique username and email",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "required": true,
+          "name": "user",
+          "description": "User data for registration",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered"
+          },
+          "409": {
+            "description": "User with the same username or email already exists"
+          },
+          "500": {
+            "description": "Failed to register a user"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticate a user by username and password",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User data for login",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully authenticated"
+          },
+          "401": {
+            "description": "Invalid password"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Failed to login"
+          }
+        }
+      }
+    },
+    "/api/users/profile/{userId}": {
+      "get": {
+        "summary": "Get user profile by ID",
+        "description": "Retrieve a user's profile information by their user ID",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Failed to fetch user profile"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
