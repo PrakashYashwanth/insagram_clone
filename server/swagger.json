@@ -15,6 +15,11 @@
       "post": {
         "summary": "Create a new post",
         "tags": ["Posts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -112,6 +117,11 @@
       "post": {
         "summary": "Add a comment to a post",
         "tags": ["Posts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -185,6 +195,11 @@
       "post": {
         "summary": "Like or unlike a post",
         "tags": ["Posts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -244,6 +259,7 @@
     "/api/users/register": {
       "post": {
         "summary": "Register a new user",
+        "tags": ["Users"],
         "description": "Register a new user with a unique username and email",
         "consumes": ["application/json"],
         "produces": ["application/json"],
@@ -275,28 +291,34 @@
     "/api/users/login": {
       "post": {
         "summary": "User login",
+        "tags": ["Users"],
         "description": "Authenticate a user by username and password",
         "consumes": ["application/json"],
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "user",
-            "description": "User data for login",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
+        "requestBody": {
+          "name": "user",
+          "description": "User data for login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 }
+              },
+              "example": {
+                "username": "string",
+                "password": "string"
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "User successfully authenticated"
@@ -316,6 +338,7 @@
     "/api/users/profile/{userId}": {
       "get": {
         "summary": "Get user profile by ID",
+        "tags": ["Users"],
         "description": "Retrieve a user's profile information by their user ID",
         "consumes": ["application/json"],
         "produces": ["application/json"],
@@ -358,6 +381,18 @@
           }
         }
       }
-    }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ]
   }
 }

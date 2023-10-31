@@ -8,11 +8,12 @@ function verifyToken(req, res, next) {
     return res.status(401).json({ error: 'Unauthorized - No token provided' })
   }
 
-  jwt.verify(token, SECRET, (err, decoded) => {
+  const jwtVal = token.split(' ')[1]
+
+  jwt.verify(jwtVal, secret, (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: 'Unauthorized - Invalid token' })
     }
-
     req.user = decoded
     next()
   })

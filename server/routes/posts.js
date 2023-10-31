@@ -4,6 +4,7 @@ const Post = require('../models/postModel') // Import the Post model
 const User = require('../models/userModel') // Import the User model
 const verifyToken = require('../utils/tokenValidation')
 
+// Create a new post
 router.post('/create', verifyToken, (req, res) => {
   const { caption, imageUrl, userId } = req.body
   if (!caption || !imageUrl || !userId) {
@@ -40,6 +41,7 @@ router.post('/create', verifyToken, (req, res) => {
     })
 })
 
+// View a post
 router.get('/post/:postId', (req, res) => {
   const postId = req.params.postId
 
@@ -59,6 +61,7 @@ router.get('/post/:postId', (req, res) => {
     })
 })
 
+// Add a comment to a post
 router.post('/post/:postId/comment', verifyToken, (req, res) => {
   const postId = req.params.postId
   const { text, userId } = req.body // You'll need to provide the user's ID
@@ -87,6 +90,7 @@ router.post('/post/:postId/comment', verifyToken, (req, res) => {
     })
 })
 
+// Like or unlike a post
 router.post('/post/:postId/like', verifyToken, (req, res) => {
   const postId = req.params.postId
 
