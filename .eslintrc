@@ -1,0 +1,40 @@
+{
+    "env": {
+      "node": true, // Server-specific environment
+      "browser": true, // Client-specific environment
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended", // You can extend from recommended configurations
+      "plugin:react/recommended" // If you're using React on the client
+    ],
+    "rules": {
+      // Your shared ESLint rules go here
+    "prettier/prettier": [
+        "error",
+        {"endOfLine":"auto"}
+    ],
+    "no-console": 2, // Use some other logger
+    // Match the prettier configs
+    "semi": ["error", "never"],
+    "indent": ["error", 2],
+    "comma-dangle": ["error", "never"]
+    },
+    "overrides": [
+      {
+        "files": ["server/**/*.js"],
+        "env": {
+          "node": true
+        },
+        // Server-specific rules
+      },
+      {
+        "files": ["client/**/*.js", "client/**/*.jsx"],
+        "env": {
+          "browser": true
+        },
+        // Client-specific rules
+      }
+    ]
+  }
+  
