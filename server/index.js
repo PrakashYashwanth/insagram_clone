@@ -43,13 +43,11 @@ app.use(express.json())
 // Parse URL-encoded requests
 app.use(express.urlencoded({ extended: true }))
 
-// Import user and post routes
-const userRoutes = require('./routes/users')
-const postRoutes = require('./routes/posts')
+// Import the central routing module
+const routes = require('./routes')
 
-// Use the user and post routes
-app.use('/api/users', userRoutes)
-app.use('/api/posts', postRoutes)
+// Use the central routing module with the base path '/api'
+app.use('/api', routes)
 
 app.get('/', (req, res) => {
   // Health check
